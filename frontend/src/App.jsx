@@ -12,12 +12,13 @@ export default function App() {
     try {
       const res = await fetch("http://localhost:5000/api/tools");
       const data = await res.json();
-      if (res.ok) setTools(data);
+      if (res.ok) setTools(data.tools || []);
     } catch {
       setError("Failed to connect to backend.");
     }
   };
 
+  // ESLint thinks there is a problem with using a setState in a useEffect synchronously, which isn't the case. Can be solved with useCallback, but this is a simple app so I will ignore the warning
   useEffect(() => {
     fetchTools();
   }, []);
@@ -121,7 +122,7 @@ export default function App() {
               </tr>
             ))}
         </tbody>
-x      </table>
+      </table>
     </div>
   );
 }
